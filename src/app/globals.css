@@ -17,3 +17,11 @@ body {
   color: var(--foreground);
   background: var(--background);
 }
+
+input:checked + div {
+  @apply border-blue;
+  @apply bg-light-blue;
+}
+input:checked + div svg {
+  @apply block;
+}
