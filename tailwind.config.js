@@ -13,6 +13,11 @@ module.exports = {
       borderRadius: {
         DEFAULT: '34px',
       },
+      colors: {
+        gray: '#eaeaea',
+        blue: '#303e87',
+        'light-blue': '#ccdcff',
+      },
     },
   },
   plugins: [],
