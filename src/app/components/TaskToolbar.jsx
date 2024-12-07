@@ -4,12 +4,13 @@ import FilterButton from './FilterButton';
 import { CiFilter, CiCircleList, CiGrid2H } from 'react-icons/ci';
 import FilterDropdown from './UI/FilterDropdown';
 
-const TaskToolbar = () => {
+const TaskToolbar = ({ onFilterChange }) => {
   const [selectedFilter, setSelectedFilter] = useState('Pending');
   const filters = ['All', 'Pending', 'Completed'];
 
   function handleFilterChange(filter) {
     setSelectedFilter(filter);
+    onFilterChange(filter);
   }
 
   return (
