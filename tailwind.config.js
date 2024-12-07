@@ -37,7 +37,6 @@ module.exports = {
       },
       hide: {
         '0%': { transform: 'translateY(0px)' },
-        // visibility: 'visible',
         '100%': {
           transform: 'translateY(-20px)',
           opacity: 0,
