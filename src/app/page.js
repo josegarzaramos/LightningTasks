@@ -1,6 +1,7 @@
 import { Nunito } from 'next/font/google';
 import TasksList from './components/TasksList';
 import TaskToolbar from './components/TaskToolbar';
+import NewTask from './components/NewTask';
 
 const nunito = Nunito({
   weight: ['400', '800'],
@@ -45,7 +46,9 @@ export default function Home() {
   return (
     <main className={nunito.className}>
       <div className="grid grid-cols-1 lg:grid-cols-main h-full p-4 md:p-10 gap-4 md:gap-10 [&>div]:bg-white [&>div]:rounded [&>div]:p-4 md:[&>div]:p-10">
-        <div className="hidden lg:block"></div>
+        <div className="hidden lg:block">
+          <NewTask maxLength={250} />
+        </div>
         <div className="overflow-auto">
           <TaskToolbar />
           <TasksList tasks={DUMMY_TASKS} />
