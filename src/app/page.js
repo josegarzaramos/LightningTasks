@@ -1,10 +1,45 @@
 import { Nunito } from 'next/font/google';
 import TasksList from './components/TasksList';
+import TaskToolbar from './components/TaskToolbar';
 
 const nunito = Nunito({
   weight: ['400', '800'],
   subsets: ['latin'],
 });
+
+const DUMMY_TASKS = [
+  {
+    id: 'task_0',
+    title: 'Start building todo app',
+    description: 'Start app as soon as possible',
+    status: 'completed',
+  },
+  {
+    id: 'task_1',
+    title: 'Finish todo app',
+    description: 'I need to finish this app by Thursday',
+    status: 'pending',
+  },
+  {
+    id: 'task_2',
+    title: 'Deploy finished app',
+    description: 'Deploy project and share link',
+    status: 'pending',
+  },
+  {
+    id: 'task_3',
+    title: 'Send completion email',
+    description: 'Send email when the deployed app is ready',
+    status: 'pending',
+  },
+  {
+    id: 'task_4',
+    title: 'Just a looooooooooong title',
+    description:
+      'A looooooooooooooong description for testing purposes, the purpose is to test the capability of the task component to handle looooooooooooong descriptions',
+    status: 'completed',
+  },
+];
 
 export default function Home() {
   return (
@@ -12,7 +47,8 @@ export default function Home() {
       <div className="grid grid-cols-1 lg:grid-cols-main h-full p-4 md:p-10 gap-4 md:gap-10 [&>div]:bg-white [&>div]:rounded [&>div]:p-4 md:[&>div]:p-10">
         <div className="hidden lg:block"></div>
         <div className="overflow-auto">
-          <TasksList />
+          <TaskToolbar />
+          <TasksList tasks={DUMMY_TASKS} />
         </div>
       </div>
     </main>
