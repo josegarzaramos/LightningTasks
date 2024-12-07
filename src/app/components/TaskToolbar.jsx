@@ -1,15 +1,12 @@
 'use client';
-import { useState } from 'react';
 import FilterButton from './FilterButton';
 import { CiFilter, CiCircleList, CiGrid2H } from 'react-icons/ci';
 import FilterDropdown from './UI/FilterDropdown';
 
-const TaskToolbar = ({ onFilterChange }) => {
-  const [selectedFilter, setSelectedFilter] = useState('Pending');
+const TaskToolbar = ({ onFilterChange, selected }) => {
   const filters = ['All', 'Pending', 'Completed'];
 
   function handleFilterChange(filter) {
-    setSelectedFilter(filter);
     onFilterChange(filter);
   }
 
@@ -27,14 +24,14 @@ const TaskToolbar = ({ onFilterChange }) => {
             <FilterButton
               key={filter}
               label={filter}
-              isSelected={selectedFilter === filter}
+              isSelected={selected === filter}
               onClick={handleFilterChange}
             />
           ))}
         </div>
         <FilterDropdown
           onFilterChange={handleFilterChange}
-          selected={selectedFilter}
+          selected={selected}
           filters={filters}
         />
       </div>

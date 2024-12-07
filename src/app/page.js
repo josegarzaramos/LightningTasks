@@ -69,7 +69,10 @@ export default function Home() {
           <NewTask maxLength={250} />
         </div>
         <div className="overflow-auto">
-          <TaskToolbar onFilterChange={handleFilterChange} />
+          <TaskToolbar
+            onFilterChange={handleFilterChange}
+            selected={selectedFilter}
+          />
           <TasksList tasks={tasks} />
         </div>
       </div>
