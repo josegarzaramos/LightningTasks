@@ -1,7 +1,13 @@
 import { auth, db } from './firebase';
 import { doc, setDoc } from 'firebase/firestore';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  verifyPasswordResetCode,
+  confirmPasswordReset,
+} from 'firebase/auth';
 
 export const registerUser = async ({ email, password, name }) => {
   try {
@@ -46,5 +52,45 @@ export const handleLogin = async (email, password) => {
       status: 400,
       error: error.message,
     };
+  }
+};
+
+export const resetUserPassword = async (email) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+    console.log('Password reset email sent successfully to:', email);
+    return { success: true, message: 'Password reset email sent.' };
+  } catch (error) {
+    console.error('Error sending password reset email:', error.message);
+    throw { success: false, message: error.message };
+  }
+};
+
+export const sendResetLink = async (email) => {
+  try {
+    await sendPasswordResetEmail(auth, email, {
+      url: 'https://lightning-tasks.vercel.app/',
+    });
+    console.log('Password reset email sent successfully.');
+    return { success: true };
+  } catch (error) {
+    console.error('Error sending password reset email:', error.message);
+    throw error;
+  }
+};
+
+export const handlePasswordReset = async (oobCode, newPassword) => {
+  try {
+    const email = await verifyPasswordResetCode(auth, oobCode);
+    console.log(`Reset code is valid for email: ${email}`);
+
+    await confirmPasswordReset(auth, oobCode, newPassword);
+    console.log('Password has been reset successfully.');
+
+    return { success: true, message: 'Password reset successful.' };
+  } catch (error) {
+    debugger;
+    console.error('Error resetting password:', error);
+    return { success: false, message: error.message, code: error.code };
   }
 };
