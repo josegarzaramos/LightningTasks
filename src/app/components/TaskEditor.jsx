@@ -60,7 +60,7 @@ const TaskEditor = ({
   }
 
   return (
-    <div className="flex flex-col gap-5 w-[calc(100%-2rem)] lg:w-full h-full justify-center absolute lg:relative">
+    <div className="flex flex-col gap-5 lg:w-full h-full justify-center  lg:relative">
       <h1 className="font-bold text-center text-xl">
         {mode === 'edit' ? 'Edit Task' : 'Add a New Task'}
       </h1>

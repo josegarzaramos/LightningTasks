@@ -80,6 +80,13 @@ export default function Home() {
     return;
   }
 
+  function adjustTaskEditorForMobile() {
+    if (window.innerWidth < 1024) {
+      editorContainerRef.current.classList.toggle('-translate-x-[120%]');
+      editorContainerRef.current.classList.toggle('lg:translate-x-0');
+    }
+  }
+
   const handleTaskClick = (id, title, description, status, event) => {
     if (event.target.tagName === 'LI') {
       setTaskEditor({
@@ -91,10 +98,7 @@ export default function Home() {
         changed: false,
       });
 
-      if (window.innerWidth < 1024) {
-        editorContainerRef.current.classList.toggle('-translate-x-[120%]');
-        editorContainerRef.current.classList.toggle('lg:translate-x-0');
-      }
+      adjustTaskEditorForMobile();
     }
   };
 
@@ -123,6 +127,8 @@ export default function Home() {
       mode: 'new',
       changed: false,
     });
+
+    adjustTaskEditorForMobile();
   };
 
   const handleSaveTask = async (taskId, updatedTask) => {
@@ -134,6 +140,8 @@ export default function Home() {
       mode: 'new',
       changed: false,
     });
+
+    adjustTaskEditorForMobile();
   };
 
   const handleStatusChange = async (taskId, newStatus) => {
@@ -144,37 +152,32 @@ export default function Home() {
     <main className={nunito.className}>
       <div className="grid grid-cols-1 lg:grid-cols-main h-full p-4 md:p-10 gap-4 md:gap-10 [&>div]:bg-white [&>div]:rounded [&>div]:p-4 md:[&>div]:p-10">
         <div
-          className="block absolute lg:relative w-[calc(100%-2rem)] lg:w-full z-10 lg:z-0 top-0 left-0 right-0 bottom-0 m-auto h-[calc(100%-2rem)] lg:h-full"
+          className="block absolute overflow-y-auto -translate-x-[120%] lg:translate-x-0 lg:overflow-hidden lg:relative w-[calc(100%-2rem)] md:w-[calc(100%-5rem)] lg:w-full z-10 lg:z-0 top-0 left-0 right-0 bottom-0 m-auto h-[calc(100%-2rem)] md:h-[calc(100%-5rem)] lg:h-full"
           ref={editorContainerRef}
         >
-          <div className="flex justify-end p-2 lg:hidden">
-            <button
-              onClick={() => {
-                if (window.innerWidth < 1024) {
-                  editorContainerRef.current.classList.toggle(
-                    '-translate-x-[120%]'
-                  );
-                  editorContainerRef.current.classList.toggle(
-                    'lg:translate-x-0'
-                  );
-                }
-              }}
-            >
-              <LuX className="text-blue " size={'2em'} />
-            </button>
+          <div className="flex flex-col h-full w-full relative">
+            <div className="flex justify-end p-2 lg:hidden">
+              <button
+                onClick={() => {
+                  adjustTaskEditorForMobile();
+                }}
+              >
+                <LuX className="text-blue " size={'2em'} />
+              </button>
+            </div>
+            <TaskEditor
+              maxLength={250}
+              id={taskEditor.id}
+              title={taskEditor.title}
+              description={taskEditor.description}
+              mode={taskEditor.mode}
+              changed={taskEditor.changed}
+              addTask={handleAddTask}
+              onCancel={handleCancelTaskEdit}
+              onSave={handleSaveTask}
+              userId={userId}
+            />
           </div>
-          <TaskEditor
-            maxLength={250}
-            id={taskEditor.id}
-            title={taskEditor.title}
-            description={taskEditor.description}
-            mode={taskEditor.mode}
-            changed={taskEditor.changed}
-            addTask={handleAddTask}
-            onCancel={handleCancelTaskEdit}
-            onSave={handleSaveTask}
-            userId={userId}
-          />
         </div>
         <div className="overflow-auto">
           <TaskToolbar
