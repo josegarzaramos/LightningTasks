@@ -16,6 +16,7 @@ import {
   deleteTaskForUser,
   updateTaskStatus,
 } from './firebase/taskService';
+import AddTaskMobile from './components/UI/AddTaskMobile';
 
 const nunito = Nunito({
   weight: ['400', '800'],
@@ -148,6 +149,17 @@ export default function Home() {
     await updateTaskStatus(userId, taskId, newStatus);
   };
 
+  const handleNewTaskMobile = () => {
+    adjustTaskEditorForMobile();
+
+    setTaskEditor({
+      id: uuidv4(),
+      status: 'pending',
+      mode: 'new',
+      changed: false,
+    });
+  };
+
   return (
     <main className={nunito.className}>
       <div className="grid grid-cols-1 lg:grid-cols-main h-full p-4 md:p-10 gap-4 md:gap-10 [&>div]:bg-white [&>div]:rounded [&>div]:p-4 md:[&>div]:p-10">
@@ -193,6 +205,8 @@ export default function Home() {
             onStatusChange={handleStatusChange}
             filter={selectedFilter}
           />
+
+          <AddTaskMobile onClick={handleNewTaskMobile} />
         </div>
       </div>
     </main>
