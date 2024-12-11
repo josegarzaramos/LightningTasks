@@ -1,19 +1,27 @@
-import { useState } from 'react';
-import { handleLogin } from '../firebase/authService';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { registerUser } from '../firebase/authService';
+import { useAuthContext } from '../context/AuthContext';
 import Link from 'next/link';
 
 const SignUp = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { user } = useAuthContext();
   const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      router.push('/');
+    }
+  }, [user, router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await handleLogin(email, password);
-    if (response.status === 200) {
-      console.log('valid user');
-      router.replace('/');
+    const response = await registerUser({ email, password, name });
+    if (response) {
+      router.push('/');
     }
   };
 
@@ -23,6 +31,20 @@ const SignUp = () => {
         className="flex flex-col bg-white px-8 py-12 h-auto gap-6 rounded-lg"
         onSubmit={handleSubmit}
       >
+        <div className="flex flex-col gap-2">
+          <label htmlFor="email" className="font-bold ml-1 text-zinc-600">
+            Name
+          </label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            className="border border-gray rounded-lg px-4 py-3 focus-visible:outline focus-visible:outline-1 focus-visible:outline-blue"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
         <div className="flex flex-col gap-2">
           <label htmlFor="email" className="font-bold ml-1 text-zinc-600">
             Email
