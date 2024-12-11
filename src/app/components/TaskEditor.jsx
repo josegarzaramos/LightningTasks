@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import RemoveTaskMobile from './UI/RemoveTaskMobile';
 
 const TaskEditor = ({
   id,
@@ -13,6 +14,7 @@ const TaskEditor = ({
   userId,
   onCancel,
   onSave,
+  onRemoveMobile,
 }) => {
   const [inputValue, setInputValue] = useState(title);
   const [textareaValue, setTextareaValue] = useState(description);
@@ -115,6 +117,9 @@ const TaskEditor = ({
             >
               Cancel
             </button>
+            <div>
+              <RemoveTaskMobile onRemoveMobile={onRemoveMobile} />
+            </div>
           </>
         )}
       </div>

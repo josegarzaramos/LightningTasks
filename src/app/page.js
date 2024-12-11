@@ -34,6 +34,7 @@ export default function Home() {
   const [tasks, setTasks] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [taskEditor, setTaskEditor] = useState(defaultNewTask);
+  const [openedTaskId, setOpenedTaskId] = useState(null);
   const { user, userId, loading } = useAuthContext();
   const editorContainerRef = useRef();
   const router = useRouter();
@@ -89,6 +90,8 @@ export default function Home() {
   }
 
   const handleTaskClick = (id, title, description, status, event) => {
+    setOpenedTaskId(id);
+
     if (event.target.tagName === 'LI') {
       setTaskEditor({
         id,
@@ -109,6 +112,7 @@ export default function Home() {
 
   const handleAddTask = async (userId, taskId, newTask) => {
     await addTaskForUser(userId, taskId, newTask);
+    adjustTaskEditorForMobile();
     setTaskEditor(newTask);
 
     setTaskEditor({
@@ -160,6 +164,18 @@ export default function Home() {
     });
   };
 
+  const handleRemoveTaskMobile = async () => {
+    await deleteTaskForUser(userId, openedTaskId);
+    adjustTaskEditorForMobile();
+
+    setTaskEditor({
+      id: uuidv4(),
+      status: 'pending',
+      mode: 'new',
+      changed: false,
+    });
+  };
+
   return (
     <main className={nunito.className}>
       <div className="grid grid-cols-1 lg:grid-cols-main h-full p-4 md:p-10 gap-4 md:gap-10 [&>div]:bg-white [&>div]:rounded [&>div]:p-4 md:[&>div]:p-10">
@@ -186,6 +202,7 @@ export default function Home() {
               changed={taskEditor.changed}
               addTask={handleAddTask}
               onCancel={handleCancelTaskEdit}
+              onRemoveMobile={handleRemoveTaskMobile}
               onSave={handleSaveTask}
               userId={userId}
             />
@@ -205,7 +222,6 @@ export default function Home() {
             onStatusChange={handleStatusChange}
             filter={selectedFilter}
           />
-
           <AddTaskMobile onClick={handleNewTaskMobile} />
         </div>
       </div>
