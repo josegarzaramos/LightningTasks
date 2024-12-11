@@ -14,6 +14,7 @@ import {
   getTasksForUser,
   updateTaskForUser,
   deleteTaskForUser,
+  updateTaskStatus,
 } from './firebase/taskService';
 
 const nunito = Nunito({
@@ -57,8 +58,7 @@ export default function Home() {
     const fetchTasksWithFilter = async () => {
       const formattedFilter = selectedFilter.toLowerCase();
       const uid = user.uid;
-      const tasksData = await getTasksForUser(uid, formattedFilter, setTasks);
-      setTasks(tasksData);
+      await getTasksForUser(uid, formattedFilter, setTasks);
     };
 
     if (user) {
@@ -67,7 +67,6 @@ export default function Home() {
   }, [selectedFilter]);
 
   function handleFilterChange(filter) {
-    debugger;
     setSelectedFilter(filter);
   }
 
@@ -107,7 +106,6 @@ export default function Home() {
     await addTaskForUser(userId, taskId, newTask);
     setTaskEditor(newTask);
 
-    console.log('Setting task editor values (reset)');
     setTaskEditor({
       id: uuidv4(),
       title: '',
@@ -136,6 +134,10 @@ export default function Home() {
       mode: 'new',
       changed: false,
     });
+  };
+
+  const handleStatusChange = async (taskId, newStatus) => {
+    await updateTaskStatus(userId, taskId, newStatus);
   };
 
   return (
@@ -185,6 +187,8 @@ export default function Home() {
             userId={userId}
             onClick={handleTaskClick}
             removeTask={handleRemoveTask}
+            onStatusChange={handleStatusChange}
+            filter={selectedFilter}
           />
         </div>
       </div>

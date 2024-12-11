@@ -7,7 +7,6 @@ import {
   collection,
   query,
   where,
-  onSnapshot,
 } from 'firebase/firestore';
 import { db } from './firebase';
 
@@ -36,18 +35,6 @@ export const getTasksForUser = async (userId, filter, callback) => {
       ...doc.data(),
     }));
     callback(initialTasks);
-
-    const unsubscribe = onSnapshot(taskQuery, (querySnapshot) => {
-      const tasks = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      debugger;
-      callback(tasks);
-    });
-
-    return unsubscribe;
   } catch (error) {
     console.error('Error getting tasks for user:', error);
     throw error;
@@ -80,7 +67,7 @@ export const updateTaskStatus = async (userId, taskId, newStatus) => {
 
     await updateDoc(taskRef, { status: newStatus });
 
-    console.log('Task status updated successfully!');
+    console.log(`Task ${taskId} updated to status: ${newStatus}`);
   } catch (error) {
     console.error('Error updating task status:', error);
   }

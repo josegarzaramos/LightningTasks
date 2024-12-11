@@ -1,24 +1,27 @@
-import { collection, query, onSnapshot, where } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from './firebase';
 
-const listenForTaskChanges = (userId, filter = 'all', callback) => {
-  const tasksRef = collection(db, 'users', userId, 'tasks');
+const listenForTaskChanges = (userId, filter, callback) => {
+  try {
+    const tasksRef = collection(db, 'users', userId, 'tasks');
 
-  let taskQuery = tasksRef;
-  if (filter !== 'all') {
-    taskQuery = query(tasksRef, where('status', '==', filter));
+    const unsubscribe = onSnapshot(tasksRef, (querySnapshot) => {
+      let tasks = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      if (filter && filter !== 'all') {
+        tasks = tasks.filter((task) => task.status === filter);
+      }
+
+      callback(tasks);
+    });
+
+    return unsubscribe;
+  } catch (error) {
+    console.error('Error listening for task changes:', error);
   }
-
-  const unsubscribe = onSnapshot(taskQuery, (snapshot) => {
-    const tasks = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-
-    callback(tasks);
-  });
-
-  return unsubscribe;
 };
 
 export default listenForTaskChanges;

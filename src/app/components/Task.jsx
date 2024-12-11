@@ -1,17 +1,22 @@
 'use client';
 import { useState } from 'react';
 import { LuCheck, LuTrash } from 'react-icons/lu';
-import { useAuthContext } from '../context/AuthContext';
-import { updateTaskStatus } from '../firebase/taskService';
 
-const Task = ({ id, title, description, status, onClick, removeTask }) => {
+const Task = ({
+  id,
+  title,
+  description,
+  status,
+  onClick,
+  removeTask,
+  onStatusChange,
+}) => {
   const [isCompleted, setIsCompleted] = useState(status === 'completed');
-  const { userId } = useAuthContext();
 
   const handleStatusChange = (e) => {
     const newStatus = e.target.checked ? 'completed' : 'pending';
     setIsCompleted(e.target.checked);
-    updateTaskStatus(userId, id, newStatus);
+    onStatusChange(id, newStatus);
   };
 
   return (

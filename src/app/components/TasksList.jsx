@@ -7,30 +7,33 @@ const TasksList = ({
   userId,
   onClick,
   removeTask,
+  onStatusChange,
   setTasks,
   filter,
 }) => {
   useEffect(() => {
-    const unsubscribe = listenForTaskChanges(userId, filter, (tasks) => {
-      setTasks(tasks);
-    });
+    const formattedFilter = filter.toLowerCase();
+    const unsubscribe = listenForTaskChanges(userId, formattedFilter, setTasks);
 
     return () => unsubscribe();
-  }, [userId, filter]);
+  }, [filter, setTasks, userId]);
 
-  const availableTasks = tasks.map(({ id, title, description, status }) => {
-    return (
-      <Task
-        key={id}
-        id={id}
-        title={title}
-        description={description}
-        status={status}
-        onClick={onClick}
-        removeTask={removeTask}
-      />
-    );
-  });
+  if (!tasks) {
+    return <div>Loading...</div>;
+  }
+
+  const availableTasks = tasks.map(({ id, title, description, status }) => (
+    <Task
+      key={id}
+      id={id}
+      title={title}
+      description={description}
+      status={status}
+      onClick={onClick}
+      removeTask={removeTask}
+      onStatusChange={onStatusChange}
+    />
+  ));
 
   return (
     <ul className="flex flex-col gap-4 md:gap-6">
@@ -38,4 +41,5 @@ const TasksList = ({
     </ul>
   );
 };
+
 export default TasksList;
