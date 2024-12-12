@@ -25,11 +25,10 @@ const Login = () => {
     setError(false);
     setIsLoading(true);
     const response = await handleLogin(email, password);
-    if (response.status === 200) {
+    if (response.success) {
       setIsLoading(false);
       router.push('/');
     } else {
-      console.log('Wrong email/password');
       setIsLoading(false);
       setError('Invalid email or password.');
     }
