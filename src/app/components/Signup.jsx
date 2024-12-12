@@ -52,6 +52,7 @@ const SignUp = () => {
             placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            minLength={1}
             required
           />
         </div>
@@ -82,6 +83,7 @@ const SignUp = () => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            minLength={6}
             required
           />
           <div className="text-right text-xs text-blue mr-1">
