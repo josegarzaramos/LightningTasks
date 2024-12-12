@@ -20,23 +20,21 @@ const TasksList = ({
     return () => unsubscribe();
   }, [filter, setTasks, userId]);
 
-  if (!tasks) {
-    return <div>Loading...</div>;
-  }
-
-  const availableTasks = tasks.map(({ id, title, description, status }) => (
-    <Task
-      key={id}
-      id={id}
-      title={title}
-      description={description}
-      status={status}
-      mode={mode}
-      onClick={onClick}
-      removeTask={removeTask}
-      onStatusChange={onStatusChange}
-    />
-  ));
+  const availableTasks = Array.isArray(tasks)
+    ? tasks.map(({ id, title, description, status }) => (
+        <Task
+          key={id}
+          id={id}
+          title={title}
+          description={description}
+          status={status}
+          mode={mode}
+          onClick={onClick}
+          removeTask={removeTask}
+          onStatusChange={onStatusChange}
+        />
+      ))
+    : [];
 
   const containerTaskModeStyle =
     mode === 'compact' ? 'gap-1 md:gap-2' : 'gap-4 md:gap-6';
