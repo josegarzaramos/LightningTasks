@@ -44,12 +44,7 @@ export default function Home() {
     const fetchTasks = async () => {
       const formattedFilter = selectedFilter.toLowerCase();
 
-      const tasksData = await getTasksForUser(
-        userId,
-        formattedFilter,
-        setTasks
-      );
-      setTasks(tasksData);
+      await getTasksForUser(userId, formattedFilter, setTasks);
     };
 
     if (user) {
