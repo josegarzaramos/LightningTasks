@@ -27,11 +27,13 @@ export const registerUser = async ({ email, password, name }) => {
       createdAt: new Date().toISOString(),
     });
 
-    console.log('User registered successfully:', user);
     return user;
   } catch (error) {
-    console.error('Error registering user:', error.message);
-    throw error;
+    return {
+      success: false,
+      message: error.message,
+      code: error.code,
+    };
   }
 };
 
@@ -42,15 +44,15 @@ export const handleLogin = async (email, password) => {
       email,
       password
     );
-    console.log('User logged in:', userCredential.user);
     return {
-      status: 200,
+      success: true,
       user: userCredential.user,
     };
   } catch (error) {
     return {
-      status: 400,
-      error: error.message,
+      success: false,
+      message: error.message,
+      code: error.code,
     };
   }
 };
@@ -58,11 +60,13 @@ export const handleLogin = async (email, password) => {
 export const resetUserPassword = async (email) => {
   try {
     await sendPasswordResetEmail(auth, email);
-    console.log('Password reset email sent successfully to:', email);
     return { success: true, message: 'Password reset email sent.' };
   } catch (error) {
-    console.error('Error sending password reset email:', error.message);
-    throw { success: false, message: error.message };
+    return {
+      success: false,
+      message: error.message,
+      code: error.code,
+    };
   }
 };
 
@@ -71,27 +75,33 @@ export const sendResetLink = async (email) => {
     await sendPasswordResetEmail(auth, email, {
       url: 'https://lightning-tasks.vercel.app/',
     });
-    console.log('Password reset email sent successfully.');
-    return { success: true };
+    return { success: true, message: 'Password reset email sent.' };
   } catch (error) {
-    console.error('Error sending password reset email:', error.message);
-    throw error;
+    return {
+      success: false,
+      message: error.message,
+      code: error.code,
+    };
   }
 };
 
 export const handlePasswordReset = async (oobCode, newPassword) => {
   try {
     const email = await verifyPasswordResetCode(auth, oobCode);
-    console.log(`Reset code is valid for email: ${email}`);
 
     await confirmPasswordReset(auth, oobCode, newPassword);
-    console.log('Password has been reset successfully.');
 
-    return { success: true, message: 'Password reset successful.' };
+    return {
+      success: true,
+      message: 'Password reset successful.',
+      email,
+    };
   } catch (error) {
-    debugger;
-    console.error('Error resetting password:', error);
-    return { success: false, message: error.message, code: error.code };
+    return {
+      success: false,
+      message: error.message,
+      code: error.code,
+    };
   }
 };
 
@@ -100,6 +110,10 @@ export const logoutUser = async () => {
     await auth.signOut();
     return { success: true, message: 'User logged out.' };
   } catch (error) {
-    return { success: false, message: error.message };
+    return {
+      success: false,
+      message: error.message,
+      code: error.code,
+    };
   }
 };

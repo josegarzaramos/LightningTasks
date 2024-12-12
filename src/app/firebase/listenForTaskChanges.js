@@ -20,7 +20,7 @@ const listenForTaskChanges = (userId, filter, callback) => {
 
     return unsubscribe;
   } catch (error) {
-    console.error('Error listening for task changes:', error);
+    throw new Error(`Error listening for task changes: ${error.message}`);
   }
 };
 

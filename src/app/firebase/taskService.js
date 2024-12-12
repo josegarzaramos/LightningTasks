@@ -14,9 +14,9 @@ export const addTaskForUser = async (userId, taskId, taskData) => {
   try {
     const taskRef = doc(db, 'users', userId, 'tasks', taskId);
     await setDoc(taskRef, taskData);
-    console.log('Task added successfully!');
+    return { success: true, message: 'Task added successfully!' };
   } catch (error) {
-    console.error('Error adding task:', error);
+    return { success: false, message: error.message, code: error.code };
   }
 };
 
@@ -35,9 +35,13 @@ export const getTasksForUser = async (userId, filter, callback) => {
       ...doc.data(),
     }));
     callback(initialTasks);
+    return { success: true, message: 'Tasks fetched successfully!' };
   } catch (error) {
-    console.error('Error getting tasks for user:', error);
-    throw error;
+    return {
+      success: false,
+      message: `Error getting tasks for user: ${error.message}`,
+      code: error.code,
+    };
   }
 };
 
@@ -45,9 +49,13 @@ export const updateTaskForUser = async (userId, taskId, updatedData) => {
   try {
     const taskRef = doc(db, 'users', userId, 'tasks', taskId);
     await updateDoc(taskRef, updatedData);
-    console.log('Task updated successfully!');
+    return { success: true, message: 'Task updated successfully!' };
   } catch (error) {
-    console.error('Error updating task:', error);
+    return {
+      success: false,
+      message: `Error updating task: ${error.message}`,
+      code: error.code,
+    };
   }
 };
 
@@ -55,20 +63,21 @@ export const deleteTaskForUser = async (userId, taskId) => {
   try {
     const taskRef = doc(db, 'users', userId, 'tasks', taskId);
     await deleteDoc(taskRef);
-    console.log('Task deleted successfully!');
+    return { success: true, message: 'Task deleted successfully!' };
   } catch (error) {
-    console.error('Error deleting task:', error);
+    return { success: false, message: error.message, code: error.code };
   }
 };
 
 export const updateTaskStatus = async (userId, taskId, newStatus) => {
   try {
     const taskRef = doc(db, 'users', userId, 'tasks', taskId);
-
     await updateDoc(taskRef, { status: newStatus });
-
-    console.log(`Task ${taskId} updated to status: ${newStatus}`);
+    return {
+      success: true,
+      message: `Task ${taskId} updated to status: ${newStatus}`,
+    };
   } catch (error) {
-    console.error('Error updating task status:', error);
+    return { success: false, message: error.message, code: error.code };
   }
 };

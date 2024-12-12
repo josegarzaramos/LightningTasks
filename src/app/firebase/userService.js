@@ -1,9 +1,4 @@
-import {
-  createDoc,
-  getDocData,
-  updateDocData,
-  deleteDocData,
-} from './firestoreService';
+import { createDoc, getDocData, updateDocData } from './firestoreService';
 
 export const createUser = async (userId, userData) => {
   await createDoc('users', userId, userData);
@@ -15,8 +10,4 @@ export const getUser = async (userId) => {
 
 export const updateUser = async (userId, updatedData) => {
   await updateDocData('users', userId, updatedData);
-};
-
-export const deleteUser = async (userId) => {
-  await deleteDocData('users', userId);
 };
