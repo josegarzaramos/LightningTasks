@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import listenForTaskChanges from '../firebase/listenForTaskChanges';
 import Task from './Task';
+import NoTasksAvailable from './NoTasksAvailable';
 
 const TasksList = ({
   tasks,
@@ -42,7 +43,11 @@ const TasksList = ({
 
   return (
     <ul className={`flex flex-col ${containerTaskModeStyle}`}>
-      {availableTasks.length === 0 ? 'No tasks' : availableTasks}
+      {availableTasks.length === 0 ? (
+        <NoTasksAvailable title="Looks like you don’t have any tasks yet. Create your first task to get started!" />
+      ) : (
+        availableTasks
+      )}
     </ul>
   );
 };
