@@ -7,11 +7,14 @@ const Task = ({
   title,
   description,
   status,
+  mode,
   onClick,
   removeTask,
   onStatusChange,
 }) => {
   const [isCompleted, setIsCompleted] = useState(status === 'completed');
+  const taskModeStyle =
+    mode === 'compact' ? 'px-4 py-3 md:p-4 rounded-lg' : 'p-6 md:p-8 rounded';
 
   const handleStatusChange = (e) => {
     const newStatus = e.target.checked ? 'completed' : 'pending';
@@ -21,7 +24,7 @@ const Task = ({
 
   return (
     <li
-      className="flex items-center p-6 md:p-8 border border-gray rounded justify-between hover:border-blue transition-all duration-300 hover:cursor-pointer"
+      className={`flex items-center ${taskModeStyle} border border-gray justify-between hover:border-blue transition-all duration-300 hover:cursor-pointer`}
       onClick={(e) => onClick(id, title, description, status, e)}
     >
       <div className="flex items-center mr-4 mb-2 relative gap-2 md:gap-4">

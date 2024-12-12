@@ -35,6 +35,7 @@ export default function Home() {
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [taskEditor, setTaskEditor] = useState(defaultNewTask);
   const [openedTaskId, setOpenedTaskId] = useState(null);
+  const [taskMode, setTaskMode] = useState('default');
   const { user, userId, loading } = useAuthContext();
   const editorContainerRef = useRef();
   const router = useRouter();
@@ -176,6 +177,10 @@ export default function Home() {
     });
   };
 
+  const handleTaskListModeChange = (mode) => {
+    setTaskMode(mode);
+  };
+
   return (
     <main className={nunito.className}>
       <div className="grid grid-cols-1 lg:grid-cols-main h-full p-4 md:p-10 gap-4 md:gap-10 [&>div]:bg-white [&>div]:rounded [&>div]:p-4 md:[&>div]:p-10">
@@ -212,6 +217,7 @@ export default function Home() {
           <TaskToolbar
             onFilterChange={handleFilterChange}
             selected={selectedFilter}
+            onModeChange={handleTaskListModeChange}
           />
           <TasksList
             tasks={tasks}
@@ -221,6 +227,7 @@ export default function Home() {
             removeTask={handleRemoveTask}
             onStatusChange={handleStatusChange}
             filter={selectedFilter}
+            mode={taskMode}
           />
           <AddTaskMobile onClick={handleNewTaskMobile} />
         </div>

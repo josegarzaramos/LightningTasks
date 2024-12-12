@@ -10,6 +10,7 @@ const TasksList = ({
   onStatusChange,
   setTasks,
   filter,
+  mode,
 }) => {
   useEffect(() => {
     const formattedFilter = filter.toLowerCase();
@@ -29,14 +30,18 @@ const TasksList = ({
       title={title}
       description={description}
       status={status}
+      mode={mode}
       onClick={onClick}
       removeTask={removeTask}
       onStatusChange={onStatusChange}
     />
   ));
 
+  const containerTaskModeStyle =
+    mode === 'compact' ? 'gap-1 md:gap-2' : 'gap-4 md:gap-6';
+
   return (
-    <ul className="flex flex-col gap-4 md:gap-6">
+    <ul className={`flex flex-col ${containerTaskModeStyle}`}>
       {availableTasks.length === 0 ? 'No tasks' : availableTasks}
     </ul>
   );
