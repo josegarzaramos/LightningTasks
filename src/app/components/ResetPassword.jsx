@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import NewPassword from './NewPassword';
 import Confirmation from './UI/Confirmation';
+import TextInput from './UI/TextInput';
 
 const ResetPassword = () => {
   const [email, setEmail] = useState('');
@@ -24,10 +25,8 @@ const ResetPassword = () => {
     if (mode === 'resetPassword') {
       setMode(mode);
       setOobCode(oobCode);
-      setLoading(false);
-    } else {
-      setLoading(false);
     }
+    setLoading(false);
   }, [searchParams]);
 
   const handleSubmit = async (e) => {
@@ -45,7 +44,6 @@ const ResetPassword = () => {
         router.push('/');
       }, 3000);
     } else {
-      debugger;
       if (response.code === 'auth/invalid-action-code') {
         setNewPasswordError('Invalid or expired verification code');
       } else {
@@ -55,11 +53,10 @@ const ResetPassword = () => {
   };
 
   if (loading) {
-    return;
+    return null;
   }
 
   const componentToDisplay = () => {
-    debugger;
     if (mode && !isPasswordUpdated) {
       return (
         <NewPassword
@@ -83,7 +80,7 @@ const ResetPassword = () => {
       return (
         <Confirmation
           title="Your password has been updated"
-          subtitle="You will redirected in a moment"
+          subtitle="You will be redirected in a moment"
           description="Please login with your new password."
         />
       );
@@ -95,11 +92,10 @@ const ResetPassword = () => {
           <label htmlFor="email" className="font-bold ml-1 text-zinc-600">
             Email
           </label>
-          <input
+          <TextInput
             type="email"
             name="email"
             id="email"
-            className="border border-gray rounded-lg px-4 py-3 focus-visible:outline focus-visible:outline-1 focus-visible:outline-blue"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -114,7 +110,7 @@ const ResetPassword = () => {
           Reset password
         </button>
         <div className="flex justify-center text-zinc-600 text-sm">
-          <span>Already have account?</span>
+          <span>Already have an account?</span>
           <Link href="/login" className="text-blue ml-1">
             Login
           </Link>
@@ -125,7 +121,7 @@ const ResetPassword = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[60%] lg:grid-cols-[40%] xl:grid-cols-[30%] 2xl:grid-cols-[20%] p-4 m-auto h-full justify-center items-center">
-      <div className=" bg-white px-8 py-12 h-auto rounded-lg">
+      <div className="bg-white px-8 py-12 h-auto rounded-lg">
         {componentToDisplay()}
       </div>
     </div>

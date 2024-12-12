@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthContext } from '../context/AuthContext';
 import { CgSpinner } from 'react-icons/cg';
 import Link from 'next/link';
+import TextInput from './UI/TextInput';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -21,7 +22,6 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e);
     setError(false);
     setIsLoading(true);
     const response = await handleLogin(email, password);
@@ -45,11 +45,10 @@ const Login = () => {
           <label htmlFor="email" className="font-bold ml-1 text-zinc-600">
             Email
           </label>
-          <input
+          <TextInput
             type="email"
             name="email"
             id="email"
-            className="border border-gray rounded-lg px-4 py-3 focus-visible:outline focus-visible:outline-1 focus-visible:outline-blue"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -60,11 +59,10 @@ const Login = () => {
           <label htmlFor="password" className="font-bold ml-1 text-zinc-600">
             Password
           </label>
-          <input
+          <TextInput
             type="password"
             name="password"
             id="password"
-            className="border border-gray rounded-lg px-4 py-3 focus-visible:outline focus-visible:outline-1 focus-visible:outline-blue"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -89,13 +87,13 @@ const Login = () => {
             </div>
           </button>
           {error && (
-            <span className=" text-red-600 text-sm mt-5 text-center">
+            <span className="text-red-600 text-sm mt-5 text-center">
               {error}
             </span>
           )}
         </div>
         <div className="flex justify-center text-zinc-600 text-sm">
-          <span>Don&apos;t have account?</span>
+          <span>Don&apos;t have an account?</span>
           <Link href="/sign-up" className="text-blue ml-1">
             Sign Up
           </Link>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import TextInput from './UI/TextInput';
 
 const NewPassword = ({ onSubmit, newPasswordError }) => {
   const [password, setPassword] = useState('');
@@ -15,8 +16,6 @@ const NewPassword = ({ onSubmit, newPasswordError }) => {
     }
   };
 
-  const borderColor = error ? 'border-red-500' : 'border-gray';
-
   return (
     <div>
       <form className="flex flex-col h-auto gap-6" onSubmit={handleSubmit}>
@@ -24,32 +23,34 @@ const NewPassword = ({ onSubmit, newPasswordError }) => {
           <label htmlFor="password" className="font-bold ml-1 text-zinc-600">
             New password
           </label>
-          <input
+          <TextInput
             type="password"
-            name="password"
             id="password"
-            className={`border ${borderColor} rounded-lg px-4 py-3 focus-visible:outline focus-visible:outline-1 focus-visible:outline-blue cursor-pointer`}
-            placeholder="Confirm password"
+            placeholder="New password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            minLength={6}
             required
+            minLength={6}
+            error={error}
           />
         </div>
+
         <div className="flex flex-col gap-2">
-          <label htmlFor="password" className="font-bold ml-1 text-zinc-600">
+          <label
+            htmlFor="confirm-password"
+            className="font-bold ml-1 text-zinc-600"
+          >
             Confirm password
           </label>
-          <input
+          <TextInput
             type="password"
-            name="confirm-password"
             id="confirm-password"
-            className={`border ${borderColor} rounded-lg px-4 py-3 focus-visible:outline focus-visible:outline-1 focus-visible:outline-blue`}
             placeholder="Confirm password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            minLength={6}
             required
+            minLength={6}
+            error={error}
           />
         </div>
 
@@ -59,13 +60,19 @@ const NewPassword = ({ onSubmit, newPasswordError }) => {
         >
           Reset password
         </button>
-        {newPasswordError != '' && (
+
+        {newPasswordError && (
           <span className="text-sm text-red-600 text-center">
             {newPasswordError}
           </span>
+        )}
+
+        {error && (
+          <span className="text-sm text-red-600 text-center">{error}</span>
         )}
       </form>
     </div>
   );
 };
+
 export default NewPassword;

@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { registerUser } from '../firebase/authService';
 import { useAuthContext } from '../context/AuthContext';
 import { CgSpinner } from 'react-icons/cg';
+import TextInput from './UI/TextInput';
 import Link from 'next/link';
 
 const SignUp = () => {
@@ -44,11 +45,10 @@ const SignUp = () => {
           <label htmlFor="email" className="font-bold ml-1 text-zinc-600">
             Name
           </label>
-          <input
+          <TextInput
             type="text"
             name="name"
             id="name"
-            className="border border-gray rounded-lg px-4 py-3 focus-visible:outline focus-visible:outline-1 focus-visible:outline-blue"
             placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -60,11 +60,10 @@ const SignUp = () => {
           <label htmlFor="email" className="font-bold ml-1 text-zinc-600">
             Email
           </label>
-          <input
+          <TextInput
             type="email"
             name="email"
             id="email"
-            className="border border-gray rounded-lg px-4 py-3 focus-visible:outline focus-visible:outline-1 focus-visible:outline-blue"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -75,11 +74,10 @@ const SignUp = () => {
           <label htmlFor="password" className="font-bold ml-1 text-zinc-600">
             Password
           </label>
-          <input
+          <TextInput
             type="password"
             name="password"
             id="password"
-            className="border border-gray rounded-lg px-4 py-3 focus-visible:outline focus-visible:outline-1 focus-visible:outline-blue"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

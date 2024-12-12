@@ -93,7 +93,11 @@ export default function Home() {
   const handleTaskClick = (id, title, description, status, event) => {
     setOpenedTaskId(id);
 
-    if (event.target.tagName === 'LI') {
+    if (
+      event.target.tagName === 'LI' ||
+      event.target.tagName === 'H2' ||
+      event.target.tagName === 'p'
+    ) {
       setTaskEditor({
         id,
         title,
