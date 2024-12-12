@@ -94,3 +94,12 @@ export const handlePasswordReset = async (oobCode, newPassword) => {
     return { success: false, message: error.message, code: error.code };
   }
 };
+
+export const logoutUser = async () => {
+  try {
+    await auth.signOut();
+    return { success: true, message: 'User logged out.' };
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
